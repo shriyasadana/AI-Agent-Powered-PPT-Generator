@@ -107,18 +107,18 @@ def prompt_generator(model,query):
     f.write(final_prompt)
   return final_prompt
 
- if all(ALL_API) and user_query:
+   if all(ALL_API) and user_query:
     
-    agent = create_agent(
+      agent = create_agent(
         model=model,
         tools= [search_latest_info,
                 generate_image]
-    )
-    #---------------------------DISPLAY AGENT------------------------
-    #st.sidebar.image(agent)
-    
-    #---------------------------WITH TABS----------------------------
-    with tab1:
+      )
+      #---------------------------DISPLAY AGENT------------------------
+      #st.sidebar.image(agent)
+      
+      #---------------------------WITH TABS----------------------------
+      with tab1:
       st.header("GENERATE IMAGE GIVE PROMPT")
       if st.button("Click to generate:", key="generate_img_button"):
         with st.spinner("Running Agent.."):
@@ -126,23 +126,23 @@ def prompt_generator(model,query):
           time.sleep(3)
           st.image(data)
         
-    with tab2:
+      with tab2:
         st.header("CHECK LATEST NEWS")
         if st.button("Fetch news: ",key="news_button"):
             with st.spinner("Running Agent.."):
-    
+      
                 prompt = """Give latest news India or word wind related
                 to tech, business, jobs, or user requested Output
                 In Proper HTML News Templates""" + user_query
-    
+      
                 response = agent.invoke({'messages': [{'role': "user",
                                                        "content": prompt}]})
-    
+      
                 code = response['messages'][-1].content[-1]['text']
-    
+      
                 st.html(code,width="stretch",unsafe_allow_javascript=True)
               
-    with tab3:
+      with tab3:
         st.header("Create PPT")
         if st.button("Click to generate: ",key="generate_ppt_button"):
             with st.spinner("Running Agent.."):
@@ -153,20 +153,20 @@ def prompt_generator(model,query):
                 code = response['messages'][-1].content[-1]['text']
                 st.html code,width="stretch",
                     unsafe_allow_javascript=True)
-    
+      
                  if st.download_button(label="DOWNLOAD PPT",
                                    data=code,
                                    file_name='ppt.html',
                                   mime='text/html'):
-    
+      
                    st.success("PPT Downloaded Successfully!!")
                           
-  
-  
-  
-  
-  
-  
-  
-  
-  
+      
+      
+      
+      
+      
+      
+      
+      
+
