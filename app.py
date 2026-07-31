@@ -154,11 +154,10 @@ def prompt_generator(model,query):
               st.html(code,width="stretch",
                   unsafe_allow_javascript=True)
     
-            if st.download_button(label="DOWNLOAD PPT",
+              if st.download_button(label="DOWNLOAD PPT",
                                  data=code,
                                  file_name='ppt.html',
                                 mime='text/html'):
-    
                 st.success("PPT Downloaded Successfully!!")
                               
           
