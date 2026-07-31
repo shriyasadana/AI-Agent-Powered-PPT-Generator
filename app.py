@@ -151,7 +151,7 @@ def prompt_generator(model,query):
               response = agent.invoke({'messages': [{'role': "user","content": final_prompt}]})
               
               code = response['messages'][-1].content[-1]['text']
-              st.html code,width="stretch",
+              st.html(code,width="stretch",
                   unsafe_allow_javascript=True)
     
                if st.download_button(label="DOWNLOAD PPT",
