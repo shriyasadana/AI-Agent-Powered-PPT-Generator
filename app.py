@@ -43,7 +43,7 @@ else:
 
 
 #==========================FRONTEND ===========================
-st.title("AI-Agent-Powered PPY Generator")
+st.title("AI-Agent-Powered PPT Generator")
 
 user_query = st.text_area("Write your PPT topic ot Prompt:")
 
