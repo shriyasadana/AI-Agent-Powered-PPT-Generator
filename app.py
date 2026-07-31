@@ -13,30 +13,33 @@ import streamlit as st
 
 
 #===================API-KEYS===================
-GOOGLE_KEY = st.sidebar.text_input("Google-API", type="password")
-GROQ_KEY = st.sidebar.text_input("Groq-API", type="password")
-TAVILY_KEY = st.sidebar.text_input("Tavily-API", type="password")
+GOOGLE_API_KEY = st.sidebar.text_input("Google-API", type="password")
+GROQ_API_KEY = st.sidebar.text_input("Groq-API", type="password")
+TAVILY_API_KEY = st.sidebar.text_input("Tavily-API", type="password")
 
 
-os.environ["GOOGLE_API_KEY"] = GOOGLE_KEY
-os.environ["GROQ_API_KEY"] = GROQ_KEY
-os.environ["TAVILY_API_KEY"] = TAVILY_KEY
+os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
+os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY
 
-ALL_API = [GOOGLE_KEY , GROQ_KEY , TAVILY_KEY]
+ALL_API = [GOOGLE_API_KEY , GROQ_API_KEY , TAVILY_API_KEY]
 
 if not all (ALL_API):
-  st.sidebar.error("PASS API_KEYS")
+  st.sidebar.error("PASS API-KEYS")
 
-else any(ALL_API):
-st.sidebar.info("MUST PASS ALL API KEYS")
+elif all(ALL_API):
+   # Step 1: Model Call
+  model = ChatGoogleGenerativeAI(
+      model = "gemini-3.5-flash-lite",
+      google_api_key = GOOGLE_API_KEY
+     )
+  st.sidebar.success("API KEYS LOADED SUCCESSFULLY")
+elif any(ALL_API):
+  st.sidebar.info("MUST PASS ALL API KEYS")
 
 else:
-st.sidebar.success("API KEYS LOADED SUCCESSFULLY")
-# Step 1: Model Call
-model = ChatGoogleGenerativeAI(
-    model="gemini-3.5-flash-lite",
-    google_api_key=GOOGLE_API_KEY
-)
+  st.info("LOADED")
+
 
 
 #==========================FRONTEND ===========================
@@ -104,73 +107,73 @@ def prompt_generator(model,query):
     f.write(final_prompt)
   return final_prompt
 
-agent = create_agent(
-    model=model,
-    tools= [
-        search_latest_info,
-        generate_image
-    ]
-)
-#---------------------------DISPLAY AGENT------------------------
-st.sidebar.image(agent)
-
-#---------------------------WITH TABS----------------------------
-with tab1:
-  st.header("GENERATE IMAGE GIVE PROMPT")
-  if st.button("CLICK TO GENERATE:"):
-    with st.spinner():
-      data = generate_iamge(user_query)
-      st.image(data)
-      st.image("Image.jpeg")
-
-with tab2:
-    st.header("CHECK LATEST NEWS")
-    if st.button("Fetch news: "):
-        with st.spinner("Running Agent.."):
-
-            prompt = """Give latest news India or word wind related
-            to tech, business, jobs, or user requested Output
-            In Proper HTML News Templates""" + user_query
-
-            response = agent.invoke({
-                'messages': [{
-                    'role': "user",
-                    "content": prompt
-                }]
-            })
-
-            code = response['messages'][-1].content[-1]['text']
-
-            st.html(
-                code,
-                width="stretch",
-                unsafe_allow_javascript=True
-            )
-with tab3:
-    st.header("Create PPT")
-    if st.button("Click to generate: "):
-        with st.spinner("Running Agent.."):
-            final_prompt = prompt_generator(model, user_query)
-            
-            response = agent.invoke({'messages': [{'role': "user","content": final_prompt}]})
-            
-            code = response['messages'][-1].content[-1]['text']
-            st.html code,width="stretch",
-                unsafe_allow_javascript=True)
-
-            st.download_button(label="DOWNLOAD PPT",
-                               data=code,
-                               file_name='ppt.html',
-                              mime='text/html')
-
-            st.success("PPT Downloaded Successfully!!")
-                    
-
-
-
-
-
-
-
-
-
+ if all(ALL_API) and user_query:
+    
+    agent = create_agent(
+        model=model,
+        tools= [search_latest_info,
+                generate_image]
+    )
+    #---------------------------DISPLAY AGENT------------------------
+    st.sidebar.image(agent)
+    
+    #---------------------------WITH TABS----------------------------
+    with tab1:
+      st.header("GENERATE IMAGE GIVE PROMPT")
+      if st.button("CLICK TO GENERATE:"):
+        with st.spinner():
+          data = generate_iamge(user_query)
+          st.image(data)
+          st.image("Image.jpeg")
+    
+    with tab2:
+        st.header("CHECK LATEST NEWS")
+        if st.button("Fetch news: "):
+            with st.spinner("Running Agent.."):
+    
+                prompt = """Give latest news India or word wind related
+                to tech, business, jobs, or user requested Output
+                In Proper HTML News Templates""" + user_query
+    
+                response = agent.invoke({
+                    'messages': [{
+                        'role': "user",
+                        "content": prompt
+                    }]
+                })
+    
+                code = response['messages'][-1].content[-1]['text']
+    
+                st.html(
+                    code,
+                    width="stretch",
+                    unsafe_allow_javascript=True
+                )
+    with tab3:
+        st.header("Create PPT")
+        if st.button("Click to generate: "):
+            with st.spinner("Running Agent.."):
+                final_prompt = prompt_generator(model, user_query)
+                
+                response = agent.invoke({'messages': [{'role': "user","content": final_prompt}]})
+                
+                code = response['messages'][-1].content[-1]['text']
+                st.html code,width="stretch",
+                    unsafe_allow_javascript=True)
+    
+                st.download_button(label="DOWNLOAD PPT",
+                                   data=code,
+                                   file_name='ppt.html',
+                                  mime='text/html')
+    
+                st.success("PPT Downloaded Successfully!!")
+                          
+  
+  
+  
+  
+  
+  
+  
+  
+  
