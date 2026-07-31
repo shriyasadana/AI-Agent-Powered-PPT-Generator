@@ -120,7 +120,7 @@ def prompt_generator(model,query):
     #---------------------------WITH TABS----------------------------
     with tab1:
     st.header("GENERATE IMAGE GIVE PROMPT")
-    if st.button("Click to generate:", key="generate_img_button"):
+    if st.button("Click to generate: ", key="generate_img_button"):
       with st.spinner("Running Agent.."):
         data = f"https://image,pollinations.ai/{user_query}"
         time.sleep(3)
