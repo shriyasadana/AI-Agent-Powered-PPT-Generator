@@ -159,7 +159,7 @@ def prompt_generator(model,query):
                                  file_name='ppt.html',
                                 mime='text/html'):
     
-                 st.success("PPT Downloaded Successfully!!")
+                  st.success("PPT Downloaded Successfully!!")
                               
           
           
